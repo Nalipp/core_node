@@ -6,11 +6,16 @@ const userSchema = new mongoose.Schema({
   posts: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post'
+      ref: 'post'
     }
   ]
 });
 
+userSchema.pre('remove', function(next) {
+  const Post = mongoose.model('post');
+
+  Post.remove({_id: { $in: this.posts}}) 
+    .then(() => next());
+});
+
 module.exports = mongoose.model("User", userSchema);
-
-

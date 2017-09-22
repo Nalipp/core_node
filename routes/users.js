@@ -40,6 +40,8 @@ router.post('/:id/delete', (req, res, next) => {
   });
 });
 
+// User Posts
+
 router.get('/:userId/posts', (req, res, next) => {
   const userId = req.params.userId;
   User.findOne({ _id: userId }).
@@ -75,7 +77,7 @@ router.post('/:userId/posts', (req, res, next) => {
         user.save((err) => {
           if (err) return console.log(err); 
           else {
-            res.send(user);
+            res.send(newPost);
           }
         });
       }
@@ -98,6 +100,26 @@ router.post('/:userId/posts/:postId', (req, res, next) => {
           post.save((err) => {
             if (err) console.log(err); 
             res.send(post);
+          });
+        }
+      });
+  });
+});
+
+router.post('/:userId/posts/:postId/delete', (req, res, next) => {
+  const userId = req.params.userId;
+  const postId = req.params.postId;
+
+  User.findOne({ _id: userId }).
+    populate('posts').
+      exec(function (err, user) {
+      if (err) console.log(err); 
+      user.posts.forEach((post, index) => {
+        if (String(post._id) === postId) {
+          user.posts.splice(index, 1);
+          user.save((err) => {
+            if (err) return console.log(err);
+            res.send(user.posts);
           });
         }
       });

@@ -3,12 +3,14 @@ const Post = require('../models/post');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  console.log('here!!!!!!!!!1'); 
   Post.find({}, (err, posts) => {
     if (err) res.redirect('/');
     else res.send(posts);
   });
 });
+
+// "59c306d0c42203ee299a043d",
+// "59c306f1c42203ee299a043e"
 
 // router.get('/:id', (req, res, next) => {
 //   Post.findById(req.params.id, (err, post) => {
@@ -40,6 +42,6 @@ router.get('/', (req, res, next) => {
 //   });
 // });
 
-// module.exports = router;
+module.exports = router;
 
 
